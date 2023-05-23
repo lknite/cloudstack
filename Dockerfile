@@ -21,7 +21,7 @@ RUN echo "" && \
   yum -y install libuuid.so.1 && \
   echo "" && \
   echo "** installing requirements **" && \
-  yum -y install supervisor && \
+  echo "yum -y install supervisor" && \
   yum -y install chrony && \
   yum -y install mysql && \
   yum -y install wget && \
@@ -62,5 +62,5 @@ RUN echo "" && \
 EXPOSE 8080 8096 5050
 
 #ENTRYPOINT ["tail","-f","/dev/null"]
-#ENTRYPOINT ["cloudstack-setup-management"]
-CMD ["/usr/bin/supervisord"]
+ENTRYPOINT ["cloudstack-setup-management"]
+#CMD ["/usr/bin/supervisord"]
