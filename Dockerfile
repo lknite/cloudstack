@@ -43,7 +43,7 @@ RUN echo "" && \
   echo directory=/root/ui >> /etc/supervisor/conf.d/supervisord.conf && \
   echo stdout_logfile=/dev/stdout >> /etc/supervisor/conf.d/supervisord.conf && \
   echo stdout_logfile_maxbytes=0 >> /etc/supervisor/conf.d/supervisord.conf && \
-  echo user=root >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo user=root >> /etc/supervisor/conf.d/supervisord.conf
 
 #  echo [program:cloudstack] >> /etc/supervisor/conf.d/supervisord.conf && \
 #  echo command=/bin/bash -c "mvn -pl client jetty:run -Dsimulator -Dorg.eclipse.jetty.annotations.maxWait=120" >> /etc/supervisor/conf.d/supervisord.conf && \
