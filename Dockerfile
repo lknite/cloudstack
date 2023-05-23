@@ -27,8 +27,9 @@ RUN echo "" && \
   yum -y install wget && \
   mkdir -p /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver && \
   wget http://download.cloudstack.org/tools/vhd-util -O /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util && \
-  chmod 755 /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util && \
-  echo "" && \
+  chmod 755 /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util
+
+RUN echo "" && \
   echo "** installing cloudstack **" && \
   yum -y install cloudstack-management
 
