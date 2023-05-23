@@ -1,7 +1,6 @@
 FROM quay.io/centos/centos:centos7.9.2009
 
-RUN \
-  echo "" && \
+RUN echo "" && \
   echo "** configuring cloudstack yum repo **" && \
   echo [cloudstack] > /etc/yum.repos.d/cloudstack.repo && \
   echo name=cloudstack >> /etc/yum.repos.d/cloudstack.repo && \
@@ -33,8 +32,7 @@ RUN \
   echo "** installing cloudstack **" && \
   yum -y install cloudstack-management
 
-RUN \
-  echo "" && \
+RUN echo "" && \
   echo "** configuring supervisor **" && \
   mkdir -p /etc/supervisor/conf.d && \
   echo [supervisord] > /etc/supervisor/conf.d/supervisord.conf && \
