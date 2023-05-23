@@ -1,6 +1,7 @@
 FROM quay.io/centos/centos:centos7.9.2009
 
-RUN echo "" && \
+RUN \
+  echo "" && \
   echo "** configuring cloudstack yum repo **" && \
   echo [cloudstack] > /etc/yum.repos.d/cloudstack.repo && \
   echo name=cloudstack >> /etc/yum.repos.d/cloudstack.repo && \
@@ -22,8 +23,6 @@ RUN echo "" && \
   echo "" && \
   echo "** installing requirements **" && \
   yum -y install supervisor && \
-  mkdir -p /etc/supervisor/conf.d && \
-  echo "deltarpm=0" >> /etc/supervisor/conf.d/supervisord.conf && \
   yum -y install chrony && \
   yum -y install mysql && \
   yum -y install wget && \
@@ -34,6 +33,27 @@ RUN echo "" && \
   echo "** installing cloudstack **" && \
   yum -y install cloudstack-management
 
+RUN \
+  echo "" && \
+  echo "** configuring supervisor **" && \
+  mkdir -p /etc/supervisor/conf.d && \
+  echo [supervisord] > /etc/supervisor/conf.d/supervisord.conf && \
+  echo nodaemon=true >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo "" >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo [program:cloudstack] >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo command=/bin/bash -c "mvn -pl client jetty:run -Dsimulator -Dorg.eclipse.jetty.annotations.maxWait=120" >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo directory=/root >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo stdout_logfile=/dev/stdout >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo stdout_logfile_maxbytes=0 >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo user=root >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo "" >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo [program:cloudstack-ui] >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo command=/bin/bash -c "npm run serve" >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo directory=/root/ui >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo stdout_logfile=/dev/stdout >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo stdout_logfile_maxbytes=0 >> /etc/supervisor/conf.d/supervisord.conf && \
+  echo user=root >> /etc/supervisor/conf.d/supervisord.conf && \
+
 #  echo "" && \
 #  echo "** configuring cloudstack **" && \
 #  cloudstack-setup-databases cloud:password@cloudstack-mysql.cloudstack.svc --deploy-as=root:KIN6CdQHFc && \
@@ -42,7 +62,6 @@ RUN echo "" && \
 
 EXPOSE 8080 8096 5050
 
-ENTRYPOINT ["tail","-f","/dev/null"]
+#ENTRYPOINT ["tail","-f","/dev/null"]
 #ENTRYPOINT ["cloudstack-setup-management"]
-#CMD ["/usr/bin/supervisord"]
-#CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord"]
