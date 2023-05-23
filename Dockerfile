@@ -21,6 +21,9 @@ RUN echo "" && \
   yum -y install libuuid.so.1 && \
   echo "" && \
   echo "** installing requirements **" && \
+  yum -y install supervisor && \
+  mkdir -p /etc/supervisor/conf.d && \
+  echo "deltarpm=0" >> /etc/supervisor/conf.d/supervisord.conf && \
   yum -y install chrony && \
   yum -y install mysql && \
   yum -y install wget && \
@@ -29,12 +32,17 @@ RUN echo "" && \
   chmod 755 /usr/share/cloudstack-common/scripts/vm/hypervisor/xenserver/vhd-util && \
   echo "" && \
   echo "** installing cloudstack **" && \
-  yum -y install cloudstack-management && \
-  echo "" && \
-  echo "** configuring cloudstack **" && \
-  cloudstack-setup-databases cloud:password@cloudstack-mysql.cloudstack.svc --deploy-as=root:KIN6CdQHFc && \
-  echo "" && \
-  echo "** starting cloudstack **"
+  yum -y install cloudstack-management
 
-ENTRYPOINT ["cloudstack-setup-management"]
+#  echo "" && \
+#  echo "** configuring cloudstack **" && \
+#  cloudstack-setup-databases cloud:password@cloudstack-mysql.cloudstack.svc --deploy-as=root:KIN6CdQHFc && \
+#  echo "" && \
+#  echo "** starting cloudstack **"
 
+EXPOSE 8080 8096 5050
+
+ENTRYPOINT ["tail","-f","/dev/null"]
+#ENTRYPOINT ["cloudstack-setup-management"]
+#CMD ["/usr/bin/supervisord"]
+#CMD ["/usr/bin/supervisord"]
